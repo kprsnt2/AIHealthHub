@@ -21,8 +21,8 @@
   --accent-red: #ef4444;
 
   /* Module Colors */
-  --pancreatitis-primary: #10b981;
-  --pancreatitis-secondary: #34d399;
+  --digestivehealth-primary: #10b981;
+  --digestivehealth-secondary: #34d399;
   --moleculearn-primary: #06b6d4;
   --moleculearn-secondary: #22d3ee;
   --healthpro-primary: #8b5cf6;
@@ -252,8 +252,8 @@ body.lang-te {
   box-shadow: var(--shadow-md);
 }
 
-.nav-tab.pancreatitis.active {
-  background: var(--pancreatitis-primary);
+.nav-tab.digestivehealth.active {
+  background: var(--digestivehealth-primary);
 }
 
 .nav-tab.moleculearn.active {
@@ -375,8 +375,8 @@ body.lang-te {
   opacity: 1;
 }
 
-.module-card.pancreatitis {
-  --card-accent: var(--pancreatitis-primary);
+.module-card.digestivehealth {
+  --card-accent: var(--digestivehealth-primary);
   --card-glow: var(--shadow-glow-emerald);
 }
 

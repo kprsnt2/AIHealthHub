@@ -112,11 +112,11 @@ export default function Header({
                         <span aria-hidden="true">🏠</span> {t('home', language)}
                     </button>
                     <button
-                        className={`nav-tab pancreatitis ${currentModule === 'pancreatitis' ? 'active' : ''}`}
-                        onClick={() => handleNavClick('pancreatitis')}
-                        aria-current={currentModule === 'pancreatitis' ? 'page' : undefined}
+                        className={`nav-tab digestivehealth ${currentModule === 'digestivehealth' ? 'active' : ''}`}
+                        onClick={() => handleNavClick('digestivehealth')}
+                        aria-current={currentModule === 'digestivehealth' ? 'page' : undefined}
                     >
-                        <span aria-hidden="true">💚</span> {t('pancreatitis', language)}
+                        <span aria-hidden="true">💚</span> {t('digestivehealth', language)}
                     </button>
                     <button
                         className={`nav-tab moleculearn ${currentModule === 'moleculearn' ? 'active' : ''}`}

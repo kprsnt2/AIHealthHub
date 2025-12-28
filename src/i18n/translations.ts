@@ -17,7 +17,7 @@ export const translations: Record<string, Record<Language, string>> = {
         en: 'Home',
         te: 'హోమ్'
     },
-    pancreatitis: {
+    digestivehealth: {
         en: 'Digestive Health',
         te: 'జీర్ణ ఆరోగ్యం'
     },
@@ -66,12 +66,12 @@ export const translations: Record<string, Record<Language, string>> = {
         te: 'మా ఆరోగ్య మాడ్యూల్స్ అన్వేషించండి'
     },
 
-    // Digestive Health Module (formerly Pancreatitis Care)
-    pancreatitisTitle: {
+    // Digestive Health Module
+    digestiveHealthTitle: {
         en: 'Digestive Health',
         te: 'జీర్ణ ఆరోగ్యం'
     },
-    pancreatitisDesc: {
+    digestiveHealthDesc: {
         en: 'Learn about digestive conditions, check symptoms, chat with AI, and get healthy diet tips',
         te: 'జీర్ణ సమస్యల గురించి తెలుసుకోండి, లక్షణాలను తనిఖీ చేయండి, AI తో చాట్ చేయండి మరియు ఆరోగ్యకరమైన ఆహార చిట్కాలు పొందండి'
     },
@@ -87,7 +87,7 @@ export const translations: Record<string, Record<Language, string>> = {
         en: 'Healthy Food Tips',
         te: 'ఆరోగ్యకరమైన ఆహార చిట్కాలు'
     },
-    askAboutPancreatitis: {
+    askAboutDigestiveHealth: {
         en: 'Ask anything about digestive health...',
         te: 'జీర్ణ ఆరోగ్యం గురించి ఏదైనా అడగండి...'
     },
@@ -99,6 +99,7 @@ export const translations: Record<string, Record<Language, string>> = {
         en: 'Select symptoms you are experiencing',
         te: 'మీరు అనుభవిస్తున్న లక్షణాలను ఎంచుకోండి'
     },
+
 
     // MolecuLearn Module
     moleculearnTitle: {

@@ -9,11 +9,11 @@ interface HomePageProps {
 export default function HomePage({ setCurrentModule, language }: HomePageProps) {
     const modules = [
         {
-            id: 'pancreatitis' as ModuleType,
+            id: 'digestivehealth' as ModuleType,
             icon: '💚',
-            title: t('pancreatitis', language),
-            description: t('pancreatitisDesc', language),
-            className: 'pancreatitis',
+            title: t('digestivehealth', language),
+            description: t('digestiveHealthDesc', language),
+            className: 'digestivehealth',
             features: [t('diseaseCheck', language), t('chatWithAI', language), t('healthyFood', language)]
         },
         {

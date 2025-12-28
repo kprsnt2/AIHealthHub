@@ -41,7 +41,7 @@ function App() {
 
   const moduleContent = useMemo(() => {
     switch (currentModule) {
-      case 'pancreatitis':
+      case 'digestivehealth':
         return <DigestiveHealthModule language={language} />;
       case 'moleculearn':
         return <MolecuLearnModule language={language} />;

@@ -19,9 +19,9 @@ export interface Message {
 }
 
 // Module types
-export type ModuleType = 'home' | 'pancreatitis' | 'moleculearn' | 'healthpro';
+export type ModuleType = 'home' | 'digestivehealth' | 'moleculearn' | 'healthpro';
 
-// Pancreatitis Module
+// Digestive Health Module
 export interface DietItem {
   name: string;
   nameTE: string;

@@ -177,13 +177,13 @@ export default function DigestiveHealthModule({ language }: DigestiveHealthModul
     return (
         <div className="module-container animate-fadeInUp">
             <div className="module-header">
-                <h1 className="module-title-large" style={{ color: 'var(--pancreatitis-primary)' }}>
-                    💚 {t('pancreatitisTitle', language)}
+                <h1 className="module-title-large" style={{ color: 'var(--digestivehealth-primary)' }}>
+                    💚 {t('digestiveHealthTitle', language)}
                 </h1>
-                <p className="module-subtitle">{t('pancreatitisDesc', language)}</p>
+                <p className="module-subtitle">{t('digestiveHealthDesc', language)}</p>
             </div>
 
-            <div className="tabs" role="tablist" aria-label={t('pancreatitisTitle', language)}>
+            <div className="tabs" role="tablist" aria-label={t('digestiveHealthTitle', language)}>
                 {tabs.map(tab => (
                     <button
                         key={tab.id}
@@ -259,7 +259,7 @@ export default function DigestiveHealthModule({ language }: DigestiveHealthModul
                         disabled={selectedSymptoms.length === 0 || isLoading}
                         aria-busy={isLoading}
                         style={{
-                            background: 'var(--pancreatitis-primary)',
+                            background: 'var(--digestivehealth-primary)',
                             marginBottom: '1.5rem'
                         }}
                     >
@@ -285,7 +285,7 @@ export default function DigestiveHealthModule({ language }: DigestiveHealthModul
                         messages={messages}
                         onSendMessage={handleSendMessage}
                         isLoading={isLoading}
-                        placeholder={t('askAboutPancreatitis', language)}
+                        placeholder={t('askAboutDigestiveHealth', language)}
                         language={language}
                     />
                 </div>
