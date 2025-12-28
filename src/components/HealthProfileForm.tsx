@@ -9,6 +9,19 @@ interface HealthProfileFormProps {
     autoExpand?: boolean;
 }
 
+// Common conditions for quick selection
+const CONDITIONS = ['Diabetes', 'Hypertension', 'Heart Disease', 'Asthma', 'COPD',
+    'Kidney Disease', 'Liver Disease', 'Thyroid Disorder', 'Arthritis', 'Depression',
+    'Anxiety', 'Migraine', 'Epilepsy', 'Cancer', 'IBS', 'GERD', 'Celiac Disease'];
+
+// Dietary restrictions
+const DIETARY_RESTRICTIONS = ['Vegetarian', 'Vegan', 'Gluten-Free', 'Dairy-Free',
+    'Nut-Free', 'Low-Sodium', 'Halal', 'Kosher', 'Keto', 'Paleo'];
+
+// Food preferences
+const FOOD_PREFERENCES = ['Indian', 'Mediterranean', 'Asian', 'Mexican', 'High Protein',
+    'Low Carb', 'Home Cooking', 'Quick Meals', 'Organic', 'Whole Foods'];
+
 export default function HealthProfileForm({
     language,
     onProfileSaved,
@@ -22,9 +35,19 @@ export default function HealthProfileForm({
         height: undefined,
         conditions: [],
         medications: [],
-        allergies: []
+        allergies: [],
+        isSmoker: false,
+        drinksAlcohol: false,
+        activityLevel: 'light',
+        weightGoal: 'maintain',
+        targetWeight: undefined,
+        timeframe: '3_months',
+        mealsPerDay: 3,
+        dietaryRestrictions: [],
+        foodPreferences: []
     });
-    const [conditionsText, setConditionsText] = useState('');
+    const [newMedication, setNewMedication] = useState('');
+    const [newAllergy, setNewAllergy] = useState('');
     const [hasExistingProfile, setHasExistingProfile] = useState(false);
 
     // Load existing profile on mount
@@ -32,22 +55,59 @@ export default function HealthProfileForm({
         const existingProfile = getHealthProfile();
         if (existingProfile) {
             setProfile(existingProfile);
-            setConditionsText(existingProfile.conditions?.join(', ') || '');
             setHasExistingProfile(true);
-            setIsExpanded(false); // Collapse if profile exists
+            setIsExpanded(false);
         } else if (autoExpand) {
-            setIsExpanded(true); // Auto-expand if no profile
+            setIsExpanded(true);
         }
     }, [autoExpand]);
 
-    const handleInputChange = useCallback((field: keyof HealthProfile, value: string | number) => {
+    const handleInputChange = useCallback((field: keyof HealthProfile, value: string | number | boolean) => {
         setProfile(prev => ({ ...prev, [field]: value }));
     }, []);
 
-    const handleConditionsChange = useCallback((text: string) => {
-        setConditionsText(text);
-        const conditions = text.split(',').map(c => c.trim()).filter(c => c.length > 0);
-        setProfile(prev => ({ ...prev, conditions }));
+    const toggleArrayItem = useCallback((field: 'conditions' | 'dietaryRestrictions' | 'foodPreferences', item: string) => {
+        setProfile(prev => {
+            const currentArray = (prev[field] as string[]) || [];
+            const newArray = currentArray.includes(item)
+                ? currentArray.filter(i => i !== item)
+                : [...currentArray, item];
+            return { ...prev, [field]: newArray };
+        });
+    }, []);
+
+    const addMedication = useCallback(() => {
+        if (newMedication.trim()) {
+            setProfile(prev => ({
+                ...prev,
+                medications: [...(prev.medications || []), newMedication.trim()]
+            }));
+            setNewMedication('');
+        }
+    }, [newMedication]);
+
+    const removeMedication = useCallback((med: string) => {
+        setProfile(prev => ({
+            ...prev,
+            medications: (prev.medications || []).filter(m => m !== med)
+        }));
+    }, []);
+
+    const addAllergy = useCallback(() => {
+        if (newAllergy.trim()) {
+            setProfile(prev => ({
+                ...prev,
+                allergies: [...(prev.allergies || []), newAllergy.trim()]
+            }));
+            setNewAllergy('');
+        }
+    }, [newAllergy]);
+
+    const removeAllergy = useCallback((allergy: string) => {
+        setProfile(prev => ({
+            ...prev,
+            allergies: (prev.allergies || []).filter(a => a !== allergy)
+        }));
     }, []);
 
     const handleSave = useCallback(() => {
@@ -60,6 +120,15 @@ export default function HealthProfileForm({
             conditions: profile.conditions || [],
             medications: profile.medications || [],
             allergies: profile.allergies || [],
+            isSmoker: profile.isSmoker,
+            drinksAlcohol: profile.drinksAlcohol,
+            activityLevel: profile.activityLevel,
+            weightGoal: profile.weightGoal,
+            targetWeight: profile.targetWeight,
+            timeframe: profile.timeframe,
+            mealsPerDay: profile.mealsPerDay,
+            dietaryRestrictions: profile.dietaryRestrictions || [],
+            foodPreferences: profile.foodPreferences || [],
             lastUpdated: new Date()
         };
 
@@ -82,6 +151,7 @@ export default function HealthProfileForm({
     }, [profile.weight, profile.height]);
 
     const bmi = calculateBMI();
+    const t = (en: string, te: string) => language === 'te' ? te : en;
 
     return (
         <div className="health-profile-form">
@@ -97,12 +167,12 @@ export default function HealthProfileForm({
                     <div className="profile-icon">👤</div>
                     <div>
                         <h3 className="profile-header-title">
-                            {language === 'te' ? 'మీ ఆరోగ్య ప్రొఫైల్' : 'Your Health Profile'}
+                            {t('Health Profile', 'ఆరోగ్య ప్రొఫైల్')}
                         </h3>
                         <p className="profile-header-subtitle">
                             {hasExistingProfile
-                                ? (language === 'te' ? 'సవరించడానికి క్లిక్ చేయండి' : 'Click to edit')
-                                : (language === 'te' ? 'వ్యక్తిగత ఆహార చిట్కాల కోసం పూర్తి చేయండి' : 'Complete for personalized diet tips')
+                                ? t('Create your profile for personalized analysis', 'వ్యక్తిగత విశ్లేషణ కోసం మీ ప్రొఫైల్ సృష్టించండి')
+                                : t('Complete for personalized diet tips', 'వ్యక్తిగత ఆహార చిట్కాల కోసం పూర్తి చేయండి')
                             }
                         </p>
                     </div>
@@ -118,19 +188,19 @@ export default function HealthProfileForm({
                     {profile.age && (
                         <div className="stat-card">
                             <div className="stat-value">{profile.age}</div>
-                            <div className="stat-label">{language === 'te' ? 'వయస్సు' : 'Age'}</div>
+                            <div className="stat-label">{t('Age', 'వయస్సు')}</div>
                         </div>
                     )}
                     {profile.weight && (
                         <div className="stat-card">
                             <div className="stat-value">{profile.weight}</div>
-                            <div className="stat-label">{language === 'te' ? 'బరువు (kg)' : 'Weight (kg)'}</div>
+                            <div className="stat-label">{t('Weight (kg)', 'బరువు (kg)')}</div>
                         </div>
                     )}
                     {profile.height && (
                         <div className="stat-card">
                             <div className="stat-value">{profile.height}</div>
-                            <div className="stat-label">{language === 'te' ? 'ఎత్తు (cm)' : 'Height (cm)'}</div>
+                            <div className="stat-label">{t('Height (cm)', 'ఎత్తు (cm)')}</div>
                         </div>
                     )}
                     {bmi && (
@@ -145,15 +215,14 @@ export default function HealthProfileForm({
             {/* Expandable Form */}
             {isExpanded && (
                 <div className="profile-form-content">
+                    {/* Basic Info Section */}
                     <div className="profile-form-grid">
                         <div className="form-group">
-                            <label className="form-label">
-                                {language === 'te' ? 'వయస్సు' : 'Age'} *
-                            </label>
+                            <label className="form-label">{t('Age', 'వయస్సు')}</label>
                             <input
                                 type="number"
                                 className="form-input"
-                                placeholder={language === 'te' ? 'మీ వయస్సు' : 'Your age'}
+                                placeholder="30"
                                 value={profile.age || ''}
                                 onChange={(e) => handleInputChange('age', parseInt(e.target.value) || 0)}
                                 min={1}
@@ -162,92 +231,269 @@ export default function HealthProfileForm({
                         </div>
 
                         <div className="form-group">
-                            <label className="form-label">
-                                {language === 'te' ? 'లింగం' : 'Gender'}
-                            </label>
+                            <label className="form-label">{t('Gender', 'లింగం')}</label>
                             <select
                                 className="form-select"
                                 value={profile.gender || ''}
                                 onChange={(e) => handleInputChange('gender', e.target.value)}
                             >
-                                <option value="">{language === 'te' ? 'ఎంచుకోండి' : 'Select'}</option>
-                                <option value="male">{language === 'te' ? 'పురుషుడు' : 'Male'}</option>
-                                <option value="female">{language === 'te' ? 'స్త్రీ' : 'Female'}</option>
-                                <option value="other">{language === 'te' ? 'ఇతర' : 'Other'}</option>
+                                <option value="">{t('Select', 'ఎంచుకోండి')}</option>
+                                <option value="male">{t('Male', 'పురుషుడు')}</option>
+                                <option value="female">{t('Female', 'స్త్రీ')}</option>
+                                <option value="other">{t('Prefer not to say', 'చెప్పడానికి ఇష్టపడటం లేదు')}</option>
                             </select>
                         </div>
 
                         <div className="form-group">
-                            <label className="form-label">
-                                {language === 'te' ? 'బరువు' : 'Weight'} <span className="optional">({language === 'te' ? 'ఐచ్ఛికం' : 'optional'})</span>
-                            </label>
-                            <div className="form-input-group">
-                                <input
-                                    type="number"
-                                    className="form-input"
-                                    placeholder="70"
-                                    value={profile.weight || ''}
-                                    onChange={(e) => handleInputChange('weight', parseFloat(e.target.value) || 0)}
-                                    min={20}
-                                    max={300}
-                                />
-                                <span className="form-input-suffix">kg</span>
-                            </div>
+                            <label className="form-label">{t('Weight (kg)', 'బరువు (kg)')}</label>
+                            <input
+                                type="number"
+                                className="form-input"
+                                placeholder="70"
+                                value={profile.weight || ''}
+                                onChange={(e) => handleInputChange('weight', parseFloat(e.target.value) || 0)}
+                                min={20}
+                                max={300}
+                            />
                         </div>
 
                         <div className="form-group">
-                            <label className="form-label">
-                                {language === 'te' ? 'ఎత్తు' : 'Height'} <span className="optional">({language === 'te' ? 'ఐచ్ఛికం' : 'optional'})</span>
+                            <label className="form-label">{t('Height (cm)', 'ఎత్తు (cm)')}</label>
+                            <input
+                                type="number"
+                                className="form-input"
+                                placeholder="170"
+                                value={profile.height || ''}
+                                onChange={(e) => handleInputChange('height', parseFloat(e.target.value) || 0)}
+                                min={50}
+                                max={250}
+                            />
+                        </div>
+                    </div>
+
+                    {/* Existing Conditions */}
+                    <div className="form-section">
+                        <label className="form-label section-label">♡ {t('Existing Conditions', 'ఉన్న పరిస్థితులు')}</label>
+                        <div className="pill-container">
+                            {CONDITIONS.map(condition => (
+                                <button
+                                    key={condition}
+                                    type="button"
+                                    className={`pill ${(profile.conditions || []).includes(condition) ? 'active' : ''}`}
+                                    onClick={() => toggleArrayItem('conditions', condition)}
+                                >
+                                    {condition}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Current Medications */}
+                    <div className="form-section">
+                        <label className="form-label section-label">⚕ {t('Current Medications', 'ప్రస్తుత మందులు')}</label>
+                        <div className="add-item-row">
+                            <input
+                                type="text"
+                                className="form-input"
+                                placeholder={t('Add medication...', 'మందు జోడించు...')}
+                                value={newMedication}
+                                onChange={(e) => setNewMedication(e.target.value)}
+                                onKeyDown={(e) => e.key === 'Enter' && addMedication()}
+                            />
+                            <button type="button" className="btn-add" onClick={addMedication}>
+                                {t('Add', 'జోడించు')}
+                            </button>
+                        </div>
+                        {(profile.medications || []).length > 0 && (
+                            <div className="added-items">
+                                {(profile.medications || []).map((med, idx) => (
+                                    <span key={idx} className="added-item">
+                                        {med}
+                                        <button onClick={() => removeMedication(med)}>×</button>
+                                    </span>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Known Allergies */}
+                    <div className="form-section">
+                        <label className="form-label section-label">△ {t('Known Allergies', 'తెలిసిన అలర్జీలు')}</label>
+                        <div className="add-item-row">
+                            <input
+                                type="text"
+                                className="form-input"
+                                placeholder={t('Add allergy...', 'అలర్జీ జోడించు...')}
+                                value={newAllergy}
+                                onChange={(e) => setNewAllergy(e.target.value)}
+                                onKeyDown={(e) => e.key === 'Enter' && addAllergy()}
+                            />
+                            <button type="button" className="btn-add" onClick={addAllergy}>
+                                {t('Add', 'జోడించు')}
+                            </button>
+                        </div>
+                        {(profile.allergies || []).length > 0 && (
+                            <div className="added-items">
+                                {(profile.allergies || []).map((allergy, idx) => (
+                                    <span key={idx} className="added-item">
+                                        {allergy}
+                                        <button onClick={() => removeAllergy(allergy)}>×</button>
+                                    </span>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Lifestyle */}
+                    <div className="form-section">
+                        <label className="form-label section-label">⚡ {t('Lifestyle', 'జీవనశైలి')}</label>
+                        <div className="lifestyle-row">
+                            <label className="checkbox-label">
+                                <input
+                                    type="checkbox"
+                                    checked={profile.isSmoker || false}
+                                    onChange={(e) => handleInputChange('isSmoker', e.target.checked)}
+                                />
+                                {t('Smoker', 'ధూమపానం')}
                             </label>
-                            <div className="form-input-group">
+                            <label className="checkbox-label">
+                                <input
+                                    type="checkbox"
+                                    checked={profile.drinksAlcohol || false}
+                                    onChange={(e) => handleInputChange('drinksAlcohol', e.target.checked)}
+                                />
+                                {t('Drinks Alcohol', 'మద్యం సేవిస్తారు')}
+                            </label>
+                            <select
+                                className="form-select activity-select"
+                                value={profile.activityLevel || 'light'}
+                                onChange={(e) => handleInputChange('activityLevel', e.target.value)}
+                            >
+                                <option value="sedentary">{t('Sedentary', 'నిశ్చలంగా')}</option>
+                                <option value="light">{t('Light Activity', 'తేలిక కార్యకలాపం')}</option>
+                                <option value="moderate">{t('Moderate', 'మధ్యస్థం')}</option>
+                                <option value="active">{t('Active', 'చురుకైన')}</option>
+                                <option value="very_active">{t('Very Active', 'చాలా చురుకైన')}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    {/* Weight Goals */}
+                    <div className="form-section">
+                        <label className="form-label section-label">🎯 {t('Weight Goal', 'బరువు లక్ష్యం')}</label>
+                        <div className="goal-buttons">
+                            <button
+                                type="button"
+                                className={`goal-btn ${profile.weightGoal === 'lose' ? 'active lose' : ''}`}
+                                onClick={() => handleInputChange('weightGoal', 'lose')}
+                            >
+                                <span className="goal-icon">📉</span>
+                                {t('Lose Weight', 'బరువు తగ్గించు')}
+                            </button>
+                            <button
+                                type="button"
+                                className={`goal-btn ${profile.weightGoal === 'maintain' ? 'active maintain' : ''}`}
+                                onClick={() => handleInputChange('weightGoal', 'maintain')}
+                            >
+                                <span className="goal-icon">➖</span>
+                                {t('Maintain', 'నిర్వహించు')}
+                            </button>
+                            <button
+                                type="button"
+                                className={`goal-btn ${profile.weightGoal === 'gain' ? 'active gain' : ''}`}
+                                onClick={() => handleInputChange('weightGoal', 'gain')}
+                            >
+                                <span className="goal-icon">📈</span>
+                                {t('Gain Weight', 'బరువు పెంచు')}
+                            </button>
+                        </div>
+
+                        <div className="profile-form-grid" style={{ marginTop: '1rem' }}>
+                            <div className="form-group">
+                                <label className="form-label">{t('Target Weight (kg)', 'లక్ష్య బరువు (kg)')}</label>
                                 <input
                                     type="number"
                                     className="form-input"
-                                    placeholder="170"
-                                    value={profile.height || ''}
-                                    onChange={(e) => handleInputChange('height', parseFloat(e.target.value) || 0)}
-                                    min={50}
-                                    max={250}
+                                    placeholder="65"
+                                    value={profile.targetWeight || ''}
+                                    onChange={(e) => handleInputChange('targetWeight', parseFloat(e.target.value) || 0)}
                                 />
-                                <span className="form-input-suffix">cm</span>
+                            </div>
+                            <div className="form-group">
+                                <label className="form-label">{t('Timeframe', 'సమయం')}</label>
+                                <select
+                                    className="form-select"
+                                    value={profile.timeframe || '3_months'}
+                                    onChange={(e) => handleInputChange('timeframe', e.target.value)}
+                                >
+                                    <option value="1_month">1 {t('Month', 'నెల')}</option>
+                                    <option value="3_months">3 {t('Months', 'నెలలు')}</option>
+                                    <option value="6_months">6 {t('Months', 'నెలలు')}</option>
+                                    <option value="1_year">1 {t('Year', 'సంవత్సరం')}</option>
+                                </select>
                             </div>
                         </div>
                     </div>
 
-                    <div className="form-group" style={{ marginBottom: '1.5rem' }}>
-                        <label className="form-label">
-                            {language === 'te' ? 'ఆరోగ్య పరిస్థితులు' : 'Health Conditions'} <span className="optional">({language === 'te' ? 'ఐచ్ఛికం' : 'optional'})</span>
-                        </label>
-                        <textarea
-                            className="form-textarea"
-                            placeholder={language === 'te'
-                                ? 'ఉదా: మధుమేహం, అధిక రక్తపోటు, IBS (కామాతో వేరు చేయండి)'
-                                : 'e.g., Diabetes, High BP, IBS (separate with commas)'
-                            }
-                            value={conditionsText}
-                            onChange={(e) => handleConditionsChange(e.target.value)}
-                        />
-                        <p className="form-hint">
-                            {language === 'te'
-                                ? 'ఇది మీ ఆహార సిఫార్సులను వ్యక్తిగతీకరించడంలో సహాయపడుతుంది'
-                                : 'This helps personalize your diet recommendations'
-                            }
-                        </p>
+                    {/* Meals per Day */}
+                    <div className="form-section">
+                        <label className="form-label section-label">🍽️ {t('Meals per Day', 'రోజుకు భోజనాలు')}</label>
+                        <div className="meals-buttons">
+                            {[2, 3, 4, 5].map(num => (
+                                <button
+                                    key={num}
+                                    type="button"
+                                    className={`meal-btn ${profile.mealsPerDay === num ? 'active' : ''}`}
+                                    onClick={() => handleInputChange('mealsPerDay', num)}
+                                >
+                                    {num} {t('meals', 'భోజనాలు')}
+                                </button>
+                            ))}
+                        </div>
                     </div>
 
+                    {/* Dietary Restrictions */}
+                    <div className="form-section">
+                        <label className="form-label section-label">🥗 {t('Dietary Restrictions', 'ఆహార పరిమితులు')}</label>
+                        <div className="pill-container">
+                            {DIETARY_RESTRICTIONS.map(restriction => (
+                                <button
+                                    key={restriction}
+                                    type="button"
+                                    className={`pill dietary ${(profile.dietaryRestrictions || []).includes(restriction) ? 'active' : ''}`}
+                                    onClick={() => toggleArrayItem('dietaryRestrictions', restriction)}
+                                >
+                                    {restriction}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Food Preferences */}
+                    <div className="form-section">
+                        <label className="form-label section-label">❤️ {t('Food Preferences', 'ఆహార ప్రాధాన్యతలు')}</label>
+                        <div className="pill-container">
+                            {FOOD_PREFERENCES.map(pref => (
+                                <button
+                                    key={pref}
+                                    type="button"
+                                    className={`pill preferences ${(profile.foodPreferences || []).includes(pref) ? 'active' : ''}`}
+                                    onClick={() => toggleArrayItem('foodPreferences', pref)}
+                                >
+                                    {pref}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Actions */}
                     <div className="profile-form-actions">
                         <button
-                            className="btn-secondary"
-                            onClick={() => setIsExpanded(false)}
-                        >
-                            {language === 'te' ? 'రద్దు చేయి' : 'Cancel'}
-                        </button>
-                        <button
-                            className="btn btn-primary"
+                            className="btn btn-primary btn-save"
                             onClick={handleSave}
                             disabled={!profile.age}
                         >
-                            {language === 'te' ? 'ప్రొఫైల్ సేవ్ చేయి' : 'Save Profile'}
+                            📄 {t('Save Profile', 'ప్రొఫైల్ సేవ్ చేయి')}
                         </button>
                     </div>
                 </div>

@@ -15,6 +15,17 @@ interface DietSection {
     items: string[];
 }
 
+// Convert markdown bold (**text**) to HTML
+function formatMarkdownText(text: string): React.ReactNode {
+    const parts = text.split(/(\*\*[^*]+\*\*)/g);
+    return parts.map((part, index) => {
+        if (part.startsWith('**') && part.endsWith('**')) {
+            return <strong key={index}>{part.slice(2, -2)}</strong>;
+        }
+        return part;
+    });
+}
+
 // Parse AI response into structured sections
 function parseDietContent(content: string, language: Language): DietSection[] {
     const sections: DietSection[] = [];
@@ -159,7 +170,7 @@ export default function DietTipsView({ content, language }: DietTipsViewProps) {
                     <div className="diet-section-content">
                         <ul>
                             {section.items.map((item, idx) => (
-                                <li key={idx}>{item}</li>
+                                <li key={idx}>{formatMarkdownText(item)}</li>
                             ))}
                         </ul>
                     </div>

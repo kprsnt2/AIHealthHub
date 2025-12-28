@@ -79,6 +79,18 @@ export interface HealthProfile {
   conditions: string[];
   medications: string[];
   allergies: string[];
+  // Lifestyle
+  isSmoker?: boolean;
+  drinksAlcohol?: boolean;
+  activityLevel?: 'sedentary' | 'light' | 'moderate' | 'active' | 'very_active';
+  // Weight goals
+  weightGoal?: 'lose' | 'maintain' | 'gain';
+  targetWeight?: number;
+  timeframe?: '1_month' | '3_months' | '6_months' | '1_year';
+  // Meal preferences
+  mealsPerDay?: number;
+  dietaryRestrictions?: string[];
+  foodPreferences?: string[];
   lastUpdated: Date;
 }
 

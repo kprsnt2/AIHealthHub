@@ -145,7 +145,18 @@ export default function DigestiveHealthModule({ language }: DigestiveHealthModul
                     gender: profileToUse.gender,
                     weight: profileToUse.weight,
                     height: profileToUse.height,
-                    conditions: profileToUse.conditions
+                    conditions: profileToUse.conditions,
+                    medications: profileToUse.medications,
+                    allergies: profileToUse.allergies,
+                    isSmoker: profileToUse.isSmoker,
+                    drinksAlcohol: profileToUse.drinksAlcohol,
+                    activityLevel: profileToUse.activityLevel,
+                    weightGoal: profileToUse.weightGoal,
+                    targetWeight: profileToUse.targetWeight,
+                    timeframe: profileToUse.timeframe,
+                    mealsPerDay: profileToUse.mealsPerDay,
+                    dietaryRestrictions: profileToUse.dietaryRestrictions,
+                    foodPreferences: profileToUse.foodPreferences
                 }, language);
             } else {
                 // Fall back to generic diet tips

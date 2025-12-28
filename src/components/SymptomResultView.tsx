@@ -14,6 +14,17 @@ interface ResultSection {
     items: string[];
 }
 
+// Convert markdown bold (**text**) to HTML
+function formatMarkdownText(text: string): React.ReactNode {
+    const parts = text.split(/(\*\*[^*]+\*\*)/g);
+    return parts.map((part, index) => {
+        if (part.startsWith('**') && part.endsWith('**')) {
+            return <strong key={index}>{part.slice(2, -2)}</strong>;
+        }
+        return part;
+    });
+}
+
 interface SeverityInfo {
     level: 'mild' | 'moderate' | 'severe';
     icon: string;
@@ -166,7 +177,28 @@ function parseSymptomResult(content: string, language: Language): ResultSection[
         }];
     }
 
-    return sections;
+    // Deduplicate sections by type - merge items from sections of same type
+    const deduplicatedSections: ResultSection[] = [];
+    const sectionMap = new Map<string, ResultSection>();
+
+    for (const section of sections) {
+        const existing = sectionMap.get(section.type);
+        if (existing) {
+            // Merge items, avoiding duplicates
+            const existingItems = new Set(existing.items);
+            for (const item of section.items) {
+                if (!existingItems.has(item)) {
+                    existing.items.push(item);
+                }
+            }
+        } else {
+            const newSection = { ...section, items: [...section.items] };
+            sectionMap.set(section.type, newSection);
+            deduplicatedSections.push(newSection);
+        }
+    }
+
+    return deduplicatedSections;
 }
 
 export default function SymptomResultView({ content, language }: SymptomResultViewProps) {
@@ -198,7 +230,7 @@ export default function SymptomResultView({ content, language }: SymptomResultVi
                     <div className="result-section-content">
                         <ul>
                             {section.items.map((item, idx) => (
-                                <li key={idx}>{item}</li>
+                                <li key={idx}>{formatMarkdownText(item)}</li>
                             ))}
                         </ul>
                     </div>

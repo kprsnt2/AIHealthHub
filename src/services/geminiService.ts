@@ -139,6 +139,17 @@ export interface ProfileData {
     weight?: number;
     height?: number;
     conditions?: string[];
+    medications?: string[];
+    allergies?: string[];
+    isSmoker?: boolean;
+    drinksAlcohol?: boolean;
+    activityLevel?: string;
+    weightGoal?: 'lose' | 'maintain' | 'gain';
+    targetWeight?: number;
+    timeframe?: string;
+    mealsPerDay?: number;
+    dietaryRestrictions?: string[];
+    foodPreferences?: string[];
 }
 
 export async function getPersonalizedDiet(profile: ProfileData, lang: Language): Promise<string> {
@@ -155,47 +166,70 @@ export async function getPersonalizedDiet(profile: ProfileData, lang: Language):
         bmiInfo = `BMI: ${bmi.toFixed(1)} (${bmiCategory})`;
     }
 
+    const goalText = profile.weightGoal === 'lose'
+        ? `Goal: Lose weight${profile.targetWeight ? ` to ${profile.targetWeight}kg` : ''}${profile.timeframe ? ` in ${profile.timeframe.replace('_', ' ')}` : ''}`
+        : profile.weightGoal === 'gain'
+            ? `Goal: Gain weight${profile.targetWeight ? ` to ${profile.targetWeight}kg` : ''}`
+            : 'Goal: Maintain current weight';
+
     const profileInfo = [
         profile.age ? `Age: ${profile.age} years` : '',
         profile.gender ? `Gender: ${profile.gender}` : '',
-        profile.weight ? `Weight: ${profile.weight} kg` : '',
+        profile.weight ? `Current Weight: ${profile.weight} kg` : '',
         profile.height ? `Height: ${profile.height} cm` : '',
         bmiInfo,
-        profile.conditions?.length ? `Health conditions: ${profile.conditions.join(', ')}` : ''
+        goalText,
+        profile.conditions?.length ? `Health conditions: ${profile.conditions.join(', ')}` : '',
+        profile.medications?.length ? `Current medications: ${profile.medications.join(', ')}` : '',
+        profile.allergies?.length ? `Allergies: ${profile.allergies.join(', ')}` : '',
+        profile.isSmoker ? 'Lifestyle: Smoker' : '',
+        profile.drinksAlcohol ? 'Lifestyle: Drinks alcohol' : '',
+        profile.activityLevel ? `Activity level: ${profile.activityLevel.replace('_', ' ')}` : '',
+        profile.mealsPerDay ? `Prefers ${profile.mealsPerDay} meals per day` : '',
+        profile.dietaryRestrictions?.length ? `Dietary restrictions: ${profile.dietaryRestrictions.join(', ')}` : '',
+        profile.foodPreferences?.length ? `Food preferences: ${profile.foodPreferences.join(', ')}` : ''
     ].filter(Boolean).join('\n');
 
     const prompt = `
 ${getLangInstruction(lang)}
 
-You are a nutrition AI assistant. Create a PERSONALIZED dietary plan based on this person's profile:
+You are an expert nutrition AI. Create a HIGHLY PERSONALIZED dietary plan based on this user's complete profile:
 
 USER PROFILE:
 ${profileInfo || 'No specific profile provided - give general recommendations'}
 
-Provide personalized dietary guidelines considering their profile:
+Based on this profile, provide a comprehensive personalized diet plan:
 
 1. FOODS THAT SUPPORT DIGESTION (8+ items)
-   - Customize based on their age, weight goals, and conditions
-   - Explain why each is good for THEIR specific situation
+   - MUST respect dietary restrictions (${profile.dietaryRestrictions?.join(', ') || 'none specified'})
+   - Include foods from their preferred cuisines (${profile.foodPreferences?.join(', ') || 'varied'})
+   - Choose foods that help with their specific conditions
+   - Use **bold** for food names
 
 2. FOODS TO LIMIT OR AVOID (8+ items)
-   - Include triggers for their specific conditions
-   - Mention any foods that interact with common medications for their conditions
+   - MUST include allergy triggers if any
+   - Include foods that conflict with their medications
+   - Consider their conditions when recommending limits
+   - Use **bold** for food names
 
 3. FOODS IN MODERATION (5+ items)
-   - Personalized based on their weight and health goals
+   - Based on their weight goal: ${profile.weightGoal || 'maintain'}
+   - Use **bold** for food names
 
 4. PERSONALIZED MEAL PLANNING TIPS (5-7 tips)
-   - Include calorie guidance if BMI suggests weight management needed
-   - Practical advice for their lifestyle
+   - For ${profile.mealsPerDay || 3} meals per day
+   - ${profile.weightGoal === 'lose' ? 'Include calorie deficit strategies' : profile.weightGoal === 'gain' ? 'Include calorie surplus strategies' : 'Focus on balanced nutrition'}
+   - Consider their activity level: ${profile.activityLevel || 'moderate'}
 
 5. HYDRATION GUIDELINES
-   - Personalized water intake based on weight
+   - Calculate water needs based on weight (${profile.weight || 70}kg)
+   - Adjust for activity level and lifestyle factors
 
 6. EATING HABITS FOR BETTER DIGESTION
-   - Meal timing and portion advice based on their profile
+   - Meal timing for ${profile.mealsPerDay || 3} meals
+   - Portion guidance
 
-Make recommendations specific to their profile. If they have conditions, address those specifically.
+Be specific and practical. Include meal ideas from their preferred cuisines.
 Format with clear headers and bullet points.
 `;
 
