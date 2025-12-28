@@ -7,7 +7,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import SplashScreen from './components/SplashScreen';
 import HomePage from './components/HomePage';
-import DigestiveHealthModule from './modules/pancreatitis/PancreatitisModule';
+import DigestiveHealthModule from './modules/digestivehealth/DigestiveHealthModule';
 import MolecuLearnModule from './modules/moleculearn/MolecuLearnModule';
 import HealthProModule from './modules/healthpro/HealthProModule';
 
