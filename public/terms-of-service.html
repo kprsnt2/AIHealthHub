@@ -80,6 +80,19 @@
         }
 
         .highlight {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .highlight p {
+            color: #10b981;
+            margin: 0;
+        }
+
+        .info {
             background: rgba(245, 158, 11, 0.1);
             border: 1px solid rgba(245, 158, 11, 0.3);
             border-radius: 0.5rem;
@@ -87,7 +100,7 @@
             margin: 1.5rem 0;
         }
 
-        .highlight p {
+        .info p {
             color: #f59e0b;
             margin: 0;
         }
@@ -126,82 +139,121 @@
         <p>By using AI Health Hub, you agree to these Terms of Service. Please read them carefully.</p>
 
         <div class="warning">
-            <p>🚨 <strong>IMPORTANT:</strong> AI Health Hub is NOT a substitute for professional medical advice,
-                diagnosis, or treatment. Always seek the advice of a qualified healthcare provider.</p>
+            <p>🚨 <strong>CRITICAL:</strong> AI Health Hub is NOT a substitute for professional medical advice,
+                diagnosis, or treatment. Always seek the advice of a qualified healthcare provider for any medical
+                concerns.</p>
         </div>
 
         <h2>1. Acceptance of Terms</h2>
-        <p>By accessing or using AI Health Hub, you agree to be bound by these Terms of Service and our Privacy Policy.
-            If you do not agree, please do not use our service.</p>
+        <p>By accessing or using AI Health Hub, you agree to be bound by these Terms of Service and our <a
+                href="/privacy-policy.html">Privacy Policy</a>. If you do not agree, please do not use our service.</p>
 
         <h2>2. Description of Service</h2>
-        <p>AI Health Hub provides:</p>
+        <p>AI Health Hub is a <strong>privacy-first, offline-first</strong> health information application that
+            provides:</p>
         <ul>
             <li>Educational health information powered by AI</li>
             <li>Symptom analysis for informational purposes</li>
             <li>Drug information and safety data</li>
             <li>Dietary guidance for specific conditions</li>
+            <li>Dual language support (English and Telugu)</li>
         </ul>
 
-        <h2>3. Medical Disclaimer</h2>
         <div class="highlight">
-            <p>⚠️ The information provided by AI Health Hub is for general informational and educational purposes only.
-                It is not intended to be, and should not be construed as, medical advice or a substitute for
-                professional medical advice, diagnosis, or treatment.</p>
+            <p>🔒 <strong>Privacy by Design:</strong> We do not collect, store, or have access to your health data. All
+                information is stored locally on your device with AES-256 encryption.</p>
+        </div>
+
+        <h2>3. Medical Disclaimer</h2>
+        <div class="info">
+            <p>⚠️ The information provided by AI Health Hub is for general educational purposes only. It is NOT intended
+                to be medical advice or a substitute for professional healthcare.</p>
         </div>
         <p>You should:</p>
         <ul>
-            <li>Always consult with a qualified healthcare professional before making health decisions</li>
-            <li>Never disregard professional medical advice because of information from this app</li>
-            <li>Seek immediate medical attention for any medical emergencies</li>
-            <li>Not rely on AI-generated content for critical health decisions</li>
+            <li><strong>Always consult</strong> with a qualified healthcare professional before making health decisions
+            </li>
+            <li><strong>Never disregard</strong> professional medical advice because of information from this app</li>
+            <li><strong>Seek immediate medical attention</strong> for any medical emergencies</li>
+            <li><strong>Understand</strong> that AI-generated content may contain errors or be incomplete</li>
+            <li><strong>Not rely</strong> on this app for critical or life-threatening health decisions</li>
         </ul>
 
-        <h2>4. User Responsibilities</h2>
+        <h2>4. No Data Collection</h2>
+        <p>Unlike many applications, AI Health Hub:</p>
+        <ul>
+            <li>Does <strong>NOT</strong> require user registration or accounts</li>
+            <li>Does <strong>NOT</strong> store your health data on any servers</li>
+            <li>Does <strong>NOT</strong> track your usage or behavior</li>
+            <li>Does <strong>NOT</strong> sell or share any information</li>
+        </ul>
+        <p>Your data stays on your device, encrypted and under your control. We built it this way because health data is
+            too personal and sensitive to be stored in the cloud.</p>
+
+        <h2>5. Local Data Storage</h2>
+        <p>All your health information is:</p>
+        <ul>
+            <li>Stored only in your browser's local storage</li>
+            <li>Encrypted using AES-256 encryption</li>
+            <li>Accessible only from your device</li>
+            <li>Deletable at any time by clearing browser data</li>
+        </ul>
+        <p><strong>Important:</strong> If you clear your browser data or use a different browser/device, your locally
+            stored information will not be available. Consider using the export feature for backups.</p>
+
+        <h2>6. AI-Generated Content</h2>
+        <p>AI Health Hub uses artificial intelligence (Google Gemini) to generate responses. You acknowledge that:</p>
+        <ul>
+            <li>AI-generated content may not always be accurate or complete</li>
+            <li>The AI may not have the most current medical information</li>
+            <li>AI responses should always be verified with qualified professionals</li>
+            <li>The AI cannot replace human medical judgment and expertise</li>
+            <li>Medical knowledge evolves, and AI training data may be outdated</li>
+        </ul>
+
+        <h2>7. User Responsibilities</h2>
         <p>You agree to:</p>
         <ul>
-            <li>Provide accurate information when using the service</li>
-            <li>Use the service only for lawful purposes</li>
+            <li>Use the service only for lawful, personal health education purposes</li>
             <li>Not misuse or attempt to manipulate the AI system</li>
-            <li>Understand that AI responses may contain errors or inaccuracies</li>
+            <li>Understand that you are responsible for your own health decisions</li>
+            <li>Seek professional medical care when needed</li>
+            <li>Not use this app as a replacement for emergency medical services</li>
         </ul>
 
-        <h2>5. Limitations of Liability</h2>
+        <h2>8. Limitations of Liability</h2>
         <p>AI Health Hub and its creators:</p>
         <ul>
             <li>Are not responsible for any health decisions made based on app information</li>
             <li>Do not guarantee the accuracy, completeness, or reliability of AI-generated content</li>
             <li>Are not liable for any damages arising from the use of this service</li>
             <li>Make no warranties about the service being error-free or uninterrupted</li>
+            <li>Are not responsible for data loss if you clear your browser storage</li>
         </ul>
 
-        <h2>6. AI-Generated Content</h2>
-        <p>AI Health Hub uses artificial intelligence to generate responses. You acknowledge that:</p>
+        <h2>9. Intellectual Property</h2>
+        <p>The AI Health Hub application, including its design, code, and content (excluding AI-generated responses and
+            your personal data), is protected by copyright and other intellectual property laws.</p>
+
+        <h2>10. Termination</h2>
+        <p>Since there are no user accounts, you can stop using the service at any time. To remove all traces of the
+            app:</p>
         <ul>
-            <li>AI-generated content may not always be accurate</li>
-            <li>The AI may not have the most current medical information</li>
-            <li>AI responses should be verified with qualified professionals</li>
-            <li>The AI cannot replace human medical judgment</li>
+            <li>Clear your browser's local storage for this site</li>
+            <li>Uninstall the PWA if installed</li>
         </ul>
 
-        <h2>7. Intellectual Property</h2>
-        <p>All content, features, and functionality of AI Health Hub are owned by the creators and are protected by
-            copyright and other intellectual property laws.</p>
-
-        <h2>8. Termination</h2>
-        <p>We reserve the right to terminate or suspend access to our service at any time, without prior notice, for
-            conduct that we believe violates these Terms.</p>
-
-        <h2>9. Changes to Terms</h2>
+        <h2>11. Changes to Terms</h2>
         <p>We may modify these Terms at any time. Continued use of the service after changes constitutes acceptance of
-            the new Terms.</p>
+            the new Terms. Check the "Last updated" date to see when these terms were last modified.</p>
 
-        <h2>10. Governing Law</h2>
-        <p>These Terms shall be governed by and construed in accordance with applicable laws, without regard to conflict
-            of law provisions.</p>
+        <h2>12. Open Source</h2>
+        <p>AI Health Hub is built with transparency in mind. The application's data storage and encryption can be
+            verified by inspecting your browser's developer tools.</p>
 
-        <h2>11. Contact</h2>
-        <p>For questions about these Terms, please contact us through the application.</p>
+        <h2>13. Contact</h2>
+        <p>For questions about these Terms, please reach out through the application's GitHub repository or contact
+            channels.</p>
 
         <a href="/" class="back-link">← Back to AI Health Hub</a>
     </div>

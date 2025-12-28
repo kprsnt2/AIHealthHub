@@ -67,6 +67,19 @@
         }
 
         .highlight {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .highlight p {
+            color: #10b981;
+            margin: 0;
+        }
+
+        .warning {
             background: rgba(245, 158, 11, 0.1);
             border: 1px solid rgba(245, 158, 11, 0.3);
             border-radius: 0.5rem;
@@ -74,7 +87,7 @@
             margin: 1.5rem 0;
         }
 
-        .highlight p {
+        .warning p {
             color: #f59e0b;
             margin: 0;
         }
@@ -102,6 +115,26 @@
             text-decoration: none;
             opacity: 0.9;
         }
+
+        .feature-box {
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .feature-box h3 {
+            color: #a78bfa;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-box p {
+            color: #d1d5db;
+            margin: 0;
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 
@@ -110,65 +143,100 @@
         <h1>Privacy Policy</h1>
         <p class="last-updated">Last updated: December 28, 2024</p>
 
-        <p>Welcome to AI Health Hub. Your privacy is important to us. This Privacy Policy explains how we collect, use,
-            and protect your information.</p>
-
         <div class="highlight">
+            <p>🔒 <strong>Privacy First:</strong> AI Health Hub does NOT collect, store, or transmit your personal
+                health data to any servers. All your data stays on YOUR device.</p>
+        </div>
+
+        <h2>Our Privacy Philosophy</h2>
+        <p>We believe your health information is deeply personal and should remain under your complete control. That's
+            why we built AI Health Hub with a <strong>privacy-first, offline-first</strong> architecture.</p>
+
+        <p><strong>Why don't we collect your data?</strong></p>
+        <ul>
+            <li><strong>Your health is personal</strong> - Medical information is among the most sensitive data. We have
+                no business storing it.</li>
+            <li><strong>No data = No breaches</strong> - We can't leak what we don't have. Your data never leaves your
+                device.</li>
+            <li><strong>Trust through transparency</strong> - You shouldn't have to trust us with your health data. So
+                we designed the app to not require that trust.</li>
+            <li><strong>You own your data</strong> - Export, backup, or delete your data anytime. It's yours.</li>
+        </ul>
+
+        <div class="warning">
             <p>⚠️ <strong>Medical Disclaimer:</strong> AI Health Hub is for informational purposes only and does not
                 constitute medical advice, diagnosis, or treatment.</p>
         </div>
 
-        <h2>1. Information We Collect</h2>
-        <p>AI Health Hub operates primarily on your device. We collect:</p>
+        <h2>How Your Data is Stored</h2>
+
+        <div class="feature-box">
+            <h3>🔐 Local Storage with Encryption</h3>
+            <p>All sensitive health data (profiles, consultations, chat history) is encrypted using AES-256 encryption
+                and stored only in your browser's local storage.</p>
+        </div>
+
+        <div class="feature-box">
+            <h3>📱 Offline-First Design</h3>
+            <p>The app works offline. Your data never needs to be uploaded to the cloud. When you close the browser,
+                your encrypted data stays on your device.</p>
+        </div>
+
+        <div class="feature-box">
+            <h3>🗑️ Easy Deletion</h3>
+            <p>Clear your browser data to permanently delete all app data. You can also use the in-app option to clear
+                specific data types.</p>
+        </div>
+
+        <h2>What Data is Stored Locally</h2>
         <ul>
-            <li><strong>Health Information You Provide:</strong> Symptoms, health conditions, medications, and other
-                health-related data you enter into the app.</li>
-            <li><strong>Usage Data:</strong> How you interact with the app, features used, and time spent.</li>
-            <li><strong>Language Preferences:</strong> Your preferred language setting (English or Telugu).</li>
+            <li><strong>Health Profile</strong> (encrypted) - Age, gender, conditions, medications, allergies</li>
+            <li><strong>Consultations</strong> (encrypted) - Symptom analyses and results</li>
+            <li><strong>Chat History</strong> (encrypted) - Conversations with the AI assistant</li>
+            <li><strong>Drug Search History</strong> (not encrypted) - Names of drugs you've searched</li>
+            <li><strong>Language Preference</strong> (not encrypted) - English or Telugu</li>
         </ul>
 
-        <h2>2. How We Store Your Data</h2>
-        <p>All personal health data is stored locally on your device using browser localStorage. This means:</p>
+        <h2>Third-Party Services</h2>
+        <p>When you use AI features, your <strong>queries</strong> (not your stored profile) are sent to Google's Gemini
+            AI for processing:</p>
         <ul>
-            <li>Your health data stays on your device</li>
-            <li>We do not have access to your personal health information</li>
-            <li>Clearing your browser data will remove this information</li>
+            <li>Queries are sent over encrypted HTTPS connections</li>
+            <li>We recommend not including personally identifiable information in queries</li>
+            <li>Google's AI privacy policy applies to query processing</li>
+            <li>We do not store or log your queries</li>
         </ul>
 
-        <h2>3. Third-Party Services</h2>
-        <p>We use Google's Gemini AI to provide health information and analysis. When you submit queries:</p>
+        <h2>What We DON'T Do</h2>
         <ul>
-            <li>Your queries are sent to Google's servers for processing</li>
-            <li>Google's privacy policy applies to this data processing</li>
-            <li>We recommend not including personally identifiable information in your queries</li>
+            <li>❌ We don't have servers storing your health data</li>
+            <li>❌ We don't create user accounts</li>
+            <li>❌ We don't track your usage patterns</li>
+            <li>❌ We don't sell or share any data</li>
+            <li>❌ We don't use analytics that identify you</li>
+            <li>❌ We don't use advertising</li>
         </ul>
 
-        <h2>4. Data Security</h2>
-        <p>We implement appropriate security measures to protect your information, including:</p>
+        <h2>Your Rights</h2>
+        <p>Since all data is stored locally on your device, you have complete control:</p>
         <ul>
-            <li>HTTPS encryption for all data transmission</li>
-            <li>Local storage encryption (coming soon)</li>
-            <li>No server-side storage of personal health data</li>
+            <li><strong>Access</strong> - View all your data in the app</li>
+            <li><strong>Export</strong> - Download your data as a backup file</li>
+            <li><strong>Delete</strong> - Clear all data instantly through the app or browser settings</li>
+            <li><strong>Portability</strong> - Your exported data can be imported on another device</li>
         </ul>
 
-        <h2>5. Your Rights</h2>
-        <p>You have the right to:</p>
-        <ul>
-            <li>Access your stored data (via browser developer tools)</li>
-            <li>Delete your data (by clearing browser localStorage)</li>
-            <li>Export your data (feature coming soon)</li>
-        </ul>
+        <h2>Children's Privacy</h2>
+        <p>AI Health Hub is not intended for use by individuals under 18 years of age without parental supervision.
+            Since we don't collect data, we cannot knowingly collect information from children.</p>
 
-        <h2>6. Children's Privacy</h2>
-        <p>AI Health Hub is not intended for use by individuals under 18 years of age without parental supervision. We
-            do not knowingly collect information from children.</p>
+        <h2>Changes to This Policy</h2>
+        <p>If we ever change how data is handled, we will update this policy and the "Last updated" date. Any
+            significant changes will be highlighted in the app.</p>
 
-        <h2>7. Changes to This Policy</h2>
-        <p>We may update this Privacy Policy from time to time. We will notify you of any changes by updating the "Last
-            updated" date at the top of this page.</p>
-
-        <h2>8. Contact Us</h2>
-        <p>If you have questions about this Privacy Policy, please contact us through the application.</p>
+        <h2>Contact</h2>
+        <p>Questions about privacy? The app is open about its data practices. All storage happens in your browser's
+            localStorage, which you can inspect using browser developer tools.</p>
 
         <a href="/" class="back-link">← Back to AI Health Hub</a>
     </div>
