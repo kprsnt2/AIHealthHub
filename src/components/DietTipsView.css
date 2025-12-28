@@ -1,0 +1,228 @@
+.diet-tips-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.diet-section {
+    padding: 1.25rem;
+    border-radius: var(--radius-lg);
+    position: relative;
+    overflow: hidden;
+}
+
+.diet-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+}
+
+.diet-section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.diet-section-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    font-size: 1.25rem;
+}
+
+.diet-section-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.diet-section-content {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+}
+
+.diet-section-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.diet-section-content li {
+    padding: 0.5rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.diet-section-content li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+}
+
+/* Recommended Foods - Green Theme */
+.diet-section.recommended {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.diet-section.recommended::before {
+    background: linear-gradient(180deg, #10b981, #059669);
+}
+
+.diet-section.recommended .diet-section-icon {
+    background: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+}
+
+.diet-section.recommended .diet-section-title {
+    color: #10b981;
+}
+
+.diet-section.recommended li::before {
+    color: #10b981;
+}
+
+/* Avoid Foods - Red Theme */
+.diet-section.avoid {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.diet-section.avoid::before {
+    background: linear-gradient(180deg, #ef4444, #dc2626);
+}
+
+.diet-section.avoid .diet-section-icon {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+}
+
+.diet-section.avoid .diet-section-title {
+    color: #ef4444;
+}
+
+.diet-section.avoid li::before {
+    color: #ef4444;
+}
+
+/* Moderation Foods - Yellow/Amber Theme */
+.diet-section.moderation {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(245, 158, 11, 0.05) 100%);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.diet-section.moderation::before {
+    background: linear-gradient(180deg, #f59e0b, #d97706);
+}
+
+.diet-section.moderation .diet-section-icon {
+    background: rgba(245, 158, 11, 0.2);
+    color: #f59e0b;
+}
+
+.diet-section.moderation .diet-section-title {
+    color: #f59e0b;
+}
+
+.diet-section.moderation li::before {
+    color: #f59e0b;
+}
+
+/* Tips Section - Blue/Cyan Theme */
+.diet-section.tips {
+    background: linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, rgba(6, 182, 212, 0.05) 100%);
+    border: 1px solid rgba(6, 182, 212, 0.2);
+}
+
+.diet-section.tips::before {
+    background: linear-gradient(180deg, #06b6d4, #0891b2);
+}
+
+.diet-section.tips .diet-section-icon {
+    background: rgba(6, 182, 212, 0.2);
+    color: #06b6d4;
+}
+
+.diet-section.tips .diet-section-title {
+    color: #06b6d4;
+}
+
+.diet-section.tips li::before {
+    color: #06b6d4;
+}
+
+/* Hydration Section - Blue Theme */
+.diet-section.hydration {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.diet-section.hydration::before {
+    background: linear-gradient(180deg, #3b82f6, #2563eb);
+}
+
+.diet-section.hydration .diet-section-icon {
+    background: rgba(59, 130, 246, 0.2);
+    color: #3b82f6;
+}
+
+.diet-section.hydration .diet-section-title {
+    color: #3b82f6;
+}
+
+.diet-section.hydration li::before {
+    color: #3b82f6;
+}
+
+/* Habits Section - Purple Theme */
+.diet-section.habits {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(139, 92, 246, 0.05) 100%);
+    border: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+.diet-section.habits::before {
+    background: linear-gradient(180deg, #8b5cf6, #7c3aed);
+}
+
+.diet-section.habits .diet-section-icon {
+    background: rgba(139, 92, 246, 0.2);
+    color: #8b5cf6;
+}
+
+.diet-section.habits .diet-section-title {
+    color: #8b5cf6;
+}
+
+.diet-section.habits li::before {
+    color: #8b5cf6;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .diet-section {
+        padding: 1rem;
+    }
+
+    .diet-section-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
+    }
+
+    .diet-section-title {
+        font-size: 1rem;
+    }
+
+    .diet-section-content {
+        font-size: 0.875rem;
+    }
+}

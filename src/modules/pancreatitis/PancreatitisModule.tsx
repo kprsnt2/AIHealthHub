@@ -4,6 +4,7 @@ import { t } from '../../i18n/translations';
 import { createSafeHtml } from '../../utils/sanitize';
 import { getErrorMessage } from '../../utils/apiUtils';
 import ChatInterface from '../../components/ChatInterface';
+import DietTipsView from '../../components/DietTipsView';
 import {
     chatAboutDigestiveHealth,
     checkDigestiveSymptoms,
@@ -291,10 +292,7 @@ export default function DigestiveHealthModule({ language }: DigestiveHealthModul
                             <p style={{ marginTop: '1rem' }}>{t('loading', language)}</p>
                         </div>
                     ) : dietInfo ? (
-                        <div
-                            className="diet-content"
-                            dangerouslySetInnerHTML={createSafeHtml(dietInfo, 'var(--accent-emerald)')}
-                        />
+                        <DietTipsView content={dietInfo} language={language} />
                     ) : (
                         <div className="empty-state">
                             <div className="empty-state-icon">🥗</div>
