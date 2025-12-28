@@ -1,18 +1,16 @@
 import { useState, useCallback, useMemo } from 'react';
-import type { Language, Message, HealthProfile } from '../../types';
+import type { Language, Message } from '../../types';
 import { t } from '../../i18n/translations';
 import { getErrorMessage } from '../../utils/apiUtils';
 import ChatInterface from '../../components/ChatInterface';
 import DietTipsView from '../../components/DietTipsView';
-import HealthProfileForm from '../../components/HealthProfileForm';
 import SymptomResultView from '../../components/SymptomResultView';
 import {
     chatAboutDigestiveHealth,
     checkDigestiveSymptoms,
-    getPersonalizedDiet,
     getDigestiveHealthDiet
 } from '../../services/geminiService';
-import { generateId, getHealthProfile } from '../../services/storageService';
+import { generateId } from '../../services/storageService';
 
 interface DigestiveHealthModuleProps {
     language: Language;
@@ -63,7 +61,7 @@ export default function DigestiveHealthModule({ language }: DigestiveHealthModul
     const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([]);
     const [checkResult, setCheckResult] = useState<string>('');
     const [dietInfo, setDietInfo] = useState<string>('');
-    const [userProfile, setUserProfile] = useState<HealthProfile | null>(getHealthProfile());
+    const [dietLoaded, setDietLoaded] = useState(false);
 
     const tabs = useMemo(() => [
         { id: 'check' as TabType, label: t('diseaseCheck', language), icon: '🔍' },
@@ -130,58 +128,28 @@ export default function DigestiveHealthModule({ language }: DigestiveHealthModul
         setIsLoading(false);
     }, [messages, language]);
 
-    const handleLoadDiet = useCallback(async (profile?: HealthProfile | null) => {
+    const handleLoadDiet = useCallback(async () => {
         if (dietInfo) return; // Already loaded
 
         setIsLoading(true);
+        setDietLoaded(true);
         try {
-            let result: string;
-            const profileToUse = profile || userProfile;
-
-            if (profileToUse && (profileToUse.age || profileToUse.weight || profileToUse.conditions?.length)) {
-                // Use personalized diet if we have profile data
-                result = await getPersonalizedDiet({
-                    age: profileToUse.age,
-                    gender: profileToUse.gender,
-                    weight: profileToUse.weight,
-                    height: profileToUse.height,
-                    conditions: profileToUse.conditions,
-                    medications: profileToUse.medications,
-                    allergies: profileToUse.allergies,
-                    isSmoker: profileToUse.isSmoker,
-                    drinksAlcohol: profileToUse.drinksAlcohol,
-                    activityLevel: profileToUse.activityLevel,
-                    weightGoal: profileToUse.weightGoal,
-                    targetWeight: profileToUse.targetWeight,
-                    timeframe: profileToUse.timeframe,
-                    mealsPerDay: profileToUse.mealsPerDay,
-                    dietaryRestrictions: profileToUse.dietaryRestrictions,
-                    foodPreferences: profileToUse.foodPreferences
-                }, language);
-            } else {
-                // Fall back to generic diet tips
-                result = await getDigestiveHealthDiet(language);
-            }
+            // Load general diet tips for digestive health
+            const result = await getDigestiveHealthDiet(language);
             setDietInfo(result);
         } catch (error) {
             console.error('Error loading diet info:', error);
             setDietInfo(getErrorMessage(error, language));
         }
         setIsLoading(false);
-    }, [dietInfo, language, userProfile]);
-
-    const handleProfileSaved = useCallback((profile: HealthProfile) => {
-        setUserProfile(profile);
-        setDietInfo(''); // Clear previous diet info
-        handleLoadDiet(profile);  // Load personalized diet
-    }, [handleLoadDiet]);
+    }, [dietInfo, language]);
 
     const handleTabChange = useCallback((tabId: TabType) => {
         setActiveTab(tabId);
-        if (tabId === 'diet') {
+        if (tabId === 'diet' && !dietLoaded) {
             handleLoadDiet();
         }
-    }, [handleLoadDiet]);
+    }, [handleLoadDiet, dietLoaded]);
 
     const symptoms = SYMPTOMS[language];
 
@@ -309,11 +277,13 @@ export default function DigestiveHealthModule({ language }: DigestiveHealthModul
                     aria-labelledby="tab-diet"
                     className="glass-card animate-fadeIn"
                 >
-                    <HealthProfileForm
-                        language={language}
-                        onProfileSaved={handleProfileSaved}
-                        autoExpand={!userProfile}
-                    />
+                    <h3 className="section-title">{t('healthyFood', language)}</h3>
+                    <p className="module-subtitle" style={{ marginBottom: '1.5rem' }}>
+                        {language === 'te'
+                            ? 'జీర్ణ ఆరోగ్యానికి సాధారణ ఆహార చిట్కాలు'
+                            : 'General dietary tips for digestive health'
+                        }
+                    </p>
 
                     {isLoading ? (
                         <div className="empty-state" role="status" aria-live="polite">
@@ -327,8 +297,8 @@ export default function DigestiveHealthModule({ language }: DigestiveHealthModul
                             <div className="empty-state-icon">🥗</div>
                             <p className="empty-state-text">
                                 {language === 'te'
-                                    ? 'వ్యక్తిగత ఆహార చిట్కాల కోసం మీ ప్రొఫైల్‌ను సేవ్ చేయండి'
-                                    : 'Save your profile to get personalized diet tips'
+                                    ? 'ఆహార చిట్కాలను లోడ్ చేస్తోంది...'
+                                    : 'Loading diet tips...'
                                 }
                             </p>
                         </div>

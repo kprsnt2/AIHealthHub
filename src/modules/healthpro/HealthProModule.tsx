@@ -3,10 +3,13 @@ import type { Language, HealthProfile, DiagnosisResult } from '../../types';
 import { t } from '../../i18n/translations';
 import { createSafeHtml } from '../../utils/sanitize';
 import { getErrorMessage } from '../../utils/apiUtils';
+import HealthProfileForm from '../../components/HealthProfileForm';
+import DietTipsView from '../../components/DietTipsView';
 import {
     analyzeSymptoms,
     getSecondOpinion,
-    generateDietPlan
+    getPersonalizedDiet,
+    getDigestiveHealthDiet
 } from '../../services/geminiService';
 import {
     getHealthProfile,
@@ -52,7 +55,6 @@ export default function HealthProModule({ language }: HealthProModuleProps) {
     const [profileSaved, setProfileSaved] = useState(false);
 
     // Diet Plan State
-    const [dietGoal, setDietGoal] = useState('');
     const [dietPlanResult, setDietPlanResult] = useState('');
 
     useEffect(() => {
@@ -120,32 +122,51 @@ export default function HealthProModule({ language }: HealthProModuleProps) {
         setTimeout(() => setProfileSaved(false), 3000);
     }, [profile]);
 
-    const handleGenerateDietPlan = useCallback(async () => {
-        if (profile.age <= 0) {
-            alert(t('profileRequired', language));
-            setActiveTab('profile');
-            return;
-        }
+    const handleLoadDiet = useCallback(async (profileData?: HealthProfile | null) => {
+        if (dietPlanResult) return; // Already loaded
 
         setIsLoading(true);
         try {
-            const result = await generateDietPlan(
-                {
-                    age: profile.age,
-                    gender: profile.gender,
-                    conditions: profile.conditions,
-                    allergies: profile.allergies
-                },
-                dietGoal,
-                language
-            );
+            let result: string;
+            const profileToUse = profileData || profile;
+
+            if (profileToUse && profileToUse.age > 0) {
+                // Use personalized diet if we have profile data
+                result = await getPersonalizedDiet({
+                    age: profileToUse.age,
+                    gender: profileToUse.gender,
+                    weight: profileToUse.weight,
+                    height: profileToUse.height,
+                    conditions: profileToUse.conditions,
+                    medications: profileToUse.medications,
+                    allergies: profileToUse.allergies,
+                    isSmoker: profileToUse.isSmoker,
+                    drinksAlcohol: profileToUse.drinksAlcohol,
+                    activityLevel: profileToUse.activityLevel,
+                    weightGoal: profileToUse.weightGoal,
+                    targetWeight: profileToUse.targetWeight,
+                    timeframe: profileToUse.timeframe,
+                    mealsPerDay: profileToUse.mealsPerDay,
+                    dietaryRestrictions: profileToUse.dietaryRestrictions,
+                    foodPreferences: profileToUse.foodPreferences
+                }, language);
+            } else {
+                // Fall back to generic diet tips
+                result = await getDigestiveHealthDiet(language);
+            }
             setDietPlanResult(result);
         } catch (error) {
-            console.error('Error generating diet plan:', error);
+            console.error('Error loading diet info:', error);
             setDietPlanResult(getErrorMessage(error, language));
         }
         setIsLoading(false);
-    }, [profile, dietGoal, language]);
+    }, [dietPlanResult, language, profile]);
+
+    const handleDietProfileSaved = useCallback((savedProfile: HealthProfile) => {
+        setProfile(savedProfile);
+        setDietPlanResult(''); // Clear previous diet info
+        handleLoadDiet(savedProfile);  // Load personalized diet
+    }, [handleLoadDiet]);
 
     const addItem = useCallback((type: 'conditions' | 'medications' | 'allergies', value: string) => {
         if (!value.trim()) return;
@@ -407,61 +428,31 @@ export default function HealthProModule({ language }: HealthProModuleProps) {
                 </div>
             )}
 
-            {/* Diet Plan Tab */}
+            {/* Diet Plan Tab - Comprehensive with Profile Form */}
             {activeTab === 'diet' && (
                 <div id="panel-diet" role="tabpanel" className="glass-card animate-fadeIn">
-                    <h3 className="section-title">{t('dietPlan', language)}</h3>
+                    <HealthProfileForm
+                        language={language}
+                        onProfileSaved={handleDietProfileSaved}
+                        autoExpand={profile.age <= 0}
+                    />
 
-                    <div className="form-group">
-                        <label className="form-label" htmlFor="diet-goal">
-                            {t('dietGoal', language)}
-                        </label>
-                        <select
-                            id="diet-goal"
-                            value={dietGoal}
-                            onChange={(e) => setDietGoal(e.target.value)}
-                            className="form-select"
-                        >
-                            <option value="">{t('selectGoal', language)}</option>
-                            <option value="weight_loss">{t('weightLoss', language)}</option>
-                            <option value="weight_gain">{t('weightGain', language)}</option>
-                            <option value="muscle_building">{t('muscleBuilding', language)}</option>
-                            <option value="heart_health">{t('heartHealth', language)}</option>
-                            <option value="diabetes_management">{t('diabetesManagement', language)}</option>
-                            <option value="general_health">{t('generalHealth', language)}</option>
-                        </select>
-                    </div>
-
-                    <button
-                        className="btn btn-primary"
-                        onClick={handleGenerateDietPlan}
-                        disabled={isLoading}
-                        aria-busy={isLoading}
-                        style={{ background: 'var(--accent-emerald)', marginBottom: '1.5rem' }}
-                    >
-                        {isLoading ? (
-                            <>
-                                <span className="loading-spinner" style={{ width: 16, height: 16 }} aria-hidden="true" />
-                                <span aria-live="polite">{t('loading', language)}</span>
-                            </>
-                        ) : (
-                            <>🥗 {t('generateDietPlan', language)}</>
-                        )}
-                    </button>
-
-                    {dietPlanResult && (
-                        <div
-                            className="result-box animate-fadeInUp"
-                            role="region"
-                            aria-label={t('dietPlan', language)}
-                            style={{
-                                padding: '1.5rem',
-                                background: 'var(--bg-tertiary)',
-                                borderRadius: 'var(--radius-lg)',
-                                borderLeft: '4px solid var(--accent-emerald)'
-                            }}
-                        >
-                            <div dangerouslySetInnerHTML={createSafeHtml(dietPlanResult, 'var(--accent-emerald)')} />
+                    {isLoading ? (
+                        <div className="empty-state" role="status" aria-live="polite">
+                            <div className="loading-spinner" style={{ width: 40, height: 40 }} aria-hidden="true" />
+                            <p style={{ marginTop: '1rem' }}>{t('loading', language)}</p>
+                        </div>
+                    ) : dietPlanResult ? (
+                        <DietTipsView content={dietPlanResult} language={language} />
+                    ) : (
+                        <div className="empty-state">
+                            <div className="empty-state-icon">🥗</div>
+                            <p className="empty-state-text">
+                                {language === 'te'
+                                    ? 'వ్యక్తిగత ఆహార ప్రణాళిక కోసం మీ ప్రొఫైల్‌ను సేవ్ చేయండి'
+                                    : 'Save your profile to get a personalized diet plan'
+                                }
+                            </p>
                         </div>
                     )}
                 </div>
