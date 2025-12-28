@@ -1,0 +1,113 @@
+/* Footer Styles */
+
+.footer {
+    background: rgba(10, 15, 26, 0.9);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid var(--border-subtle);
+    padding: var(--spacing-lg) var(--spacing-xl);
+    margin-top: auto;
+}
+
+/* Medical Disclaimer */
+.footer-disclaimer {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-lg);
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.disclaimer-icon {
+    flex-shrink: 0;
+    font-size: 1.2rem;
+}
+
+.footer-disclaimer p {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Footer Content */
+.footer-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+/* Footer Links */
+.footer-links {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.footer-link {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: var(--transition-normal);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-sm);
+}
+
+.footer-link:hover {
+    color: var(--accent-cyan);
+    background: var(--bg-glass);
+}
+
+.footer-link:focus {
+    outline: 2px solid var(--accent-cyan);
+    outline-offset: 2px;
+}
+
+.footer-divider {
+    color: var(--text-muted);
+    opacity: 0.5;
+}
+
+/* Copyright */
+.footer-copyright {
+    text-align: center;
+}
+
+.footer-copyright p {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+.footer-copyright .version {
+    font-size: 0.75rem;
+    opacity: 0.6;
+    margin-top: var(--spacing-xs);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .footer {
+        padding: var(--spacing-md);
+    }
+
+    .footer-disclaimer {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .footer-links {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}

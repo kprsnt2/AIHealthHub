@@ -1,0 +1,163 @@
+/* Loading Skeleton Animations */
+
+.loading-skeleton-container {
+    width: 100%;
+}
+
+.skeleton-item {
+    margin-bottom: var(--spacing-md);
+}
+
+.skeleton-item:last-child {
+    margin-bottom: 0;
+}
+
+/* Base skeleton animation */
+.skeleton-line,
+.skeleton-icon,
+.skeleton-avatar,
+.skeleton-badge,
+.skeleton-tag,
+.skeleton-meter {
+    background: linear-gradient(90deg,
+            var(--bg-tertiary) 25%,
+            var(--bg-card) 50%,
+            var(--bg-tertiary) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s ease-in-out infinite;
+    border-radius: var(--radius-sm);
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* Skeleton lines */
+.skeleton-line {
+    height: 14px;
+    margin-bottom: 8px;
+}
+
+.skeleton-line:last-child {
+    margin-bottom: 0;
+}
+
+.skeleton-line.long {
+    width: 100%;
+}
+
+.skeleton-line.medium {
+    width: 70%;
+}
+
+.skeleton-line.short {
+    width: 40%;
+}
+
+/* Text skeleton */
+.skeleton-text {
+    padding: var(--spacing-md);
+}
+
+/* Card skeleton */
+.skeleton-card {
+    padding: var(--spacing-lg);
+    background: var(--gradient-card);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-subtle);
+}
+
+.skeleton-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.skeleton-icon.large {
+    width: 64px;
+    height: 64px;
+}
+
+/* Chat skeleton */
+.skeleton-chat {
+    display: flex;
+    gap: var(--spacing-md);
+}
+
+.skeleton-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.skeleton-bubble {
+    flex: 1;
+    max-width: 70%;
+    padding: var(--spacing-md);
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-lg);
+    border-bottom-left-radius: var(--radius-sm);
+}
+
+/* Drug info skeleton */
+.skeleton-drug-info {
+    padding: var(--spacing-lg);
+    background: var(--gradient-card);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-subtle);
+}
+
+.skeleton-header {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.skeleton-title-group {
+    flex: 1;
+}
+
+.skeleton-section {
+    margin: var(--spacing-lg) 0;
+}
+
+.skeleton-meter {
+    height: 8px;
+    width: 100%;
+    border-radius: var(--radius-full);
+    margin: var(--spacing-lg) 0;
+}
+
+.skeleton-tags {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.skeleton-tag {
+    width: 80px;
+    height: 28px;
+    border-radius: var(--radius-full);
+}
+
+/* Diagnosis skeleton */
+.skeleton-diagnosis {
+    padding: var(--spacing-lg);
+    background: var(--gradient-card);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-subtle);
+}
+
+.skeleton-badge {
+    width: 100px;
+    height: 24px;
+    border-radius: var(--radius-full);
+    margin-bottom: var(--spacing-md);
+}
