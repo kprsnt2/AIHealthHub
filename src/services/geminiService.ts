@@ -100,7 +100,7 @@ Keep responses concise but informative.
 // Legacy alias for backward compatibility
 export const chatAboutPancreatitis = chatAboutDigestiveHealth;
 
-// Digestive Health Module - Healthy Food Tips
+// Digestive Health Module - Healthy Food Tips (Generic)
 export async function getDigestiveHealthDiet(lang: Language): Promise<string> {
     const prompt = `
 ${getLangInstruction(lang)}
@@ -126,6 +126,77 @@ Provide comprehensive dietary guidelines for better digestive health:
    - Meal timing, portion sizes, eating speed
 
 Format with clear headers and bullet points. Be specific about why each food is recommended or should be avoided.
+`;
+
+    const result = await getModel().generateContent(prompt);
+    return result.response.text();
+}
+
+// Digestive Health Module - Personalized Diet Tips
+export interface ProfileData {
+    age?: number;
+    gender?: string;
+    weight?: number;
+    height?: number;
+    conditions?: string[];
+}
+
+export async function getPersonalizedDiet(profile: ProfileData, lang: Language): Promise<string> {
+    // Calculate BMI if weight and height provided
+    let bmiInfo = '';
+    if (profile.weight && profile.height) {
+        const heightM = profile.height / 100;
+        const bmi = profile.weight / (heightM * heightM);
+        let bmiCategory = '';
+        if (bmi < 18.5) bmiCategory = 'underweight';
+        else if (bmi < 25) bmiCategory = 'normal weight';
+        else if (bmi < 30) bmiCategory = 'overweight';
+        else bmiCategory = 'obese';
+        bmiInfo = `BMI: ${bmi.toFixed(1)} (${bmiCategory})`;
+    }
+
+    const profileInfo = [
+        profile.age ? `Age: ${profile.age} years` : '',
+        profile.gender ? `Gender: ${profile.gender}` : '',
+        profile.weight ? `Weight: ${profile.weight} kg` : '',
+        profile.height ? `Height: ${profile.height} cm` : '',
+        bmiInfo,
+        profile.conditions?.length ? `Health conditions: ${profile.conditions.join(', ')}` : ''
+    ].filter(Boolean).join('\n');
+
+    const prompt = `
+${getLangInstruction(lang)}
+
+You are a nutrition AI assistant. Create a PERSONALIZED dietary plan based on this person's profile:
+
+USER PROFILE:
+${profileInfo || 'No specific profile provided - give general recommendations'}
+
+Provide personalized dietary guidelines considering their profile:
+
+1. FOODS THAT SUPPORT DIGESTION (8+ items)
+   - Customize based on their age, weight goals, and conditions
+   - Explain why each is good for THEIR specific situation
+
+2. FOODS TO LIMIT OR AVOID (8+ items)
+   - Include triggers for their specific conditions
+   - Mention any foods that interact with common medications for their conditions
+
+3. FOODS IN MODERATION (5+ items)
+   - Personalized based on their weight and health goals
+
+4. PERSONALIZED MEAL PLANNING TIPS (5-7 tips)
+   - Include calorie guidance if BMI suggests weight management needed
+   - Practical advice for their lifestyle
+
+5. HYDRATION GUIDELINES
+   - Personalized water intake based on weight
+
+6. EATING HABITS FOR BETTER DIGESTION
+   - Meal timing and portion advice based on their profile
+
+Make recommendations specific to their profile. If they have conditions, address those specifically.
+Format with clear headers and bullet points.
 `;
 
     const result = await getModel().generateContent(prompt);
