@@ -5,46 +5,55 @@ import { createSafeHtml } from '../../utils/sanitize';
 import { getErrorMessage } from '../../utils/apiUtils';
 import ChatInterface from '../../components/ChatInterface';
 import {
-    chatAboutPancreatitis,
-    checkPancreatitisSymptoms,
-    getPancreatitisDiet
+    chatAboutDigestiveHealth,
+    checkDigestiveSymptoms,
+    getDigestiveHealthDiet
 } from '../../services/geminiService';
 import { generateId } from '../../services/storageService';
 
-interface PancreatitisModuleProps {
+interface DigestiveHealthModuleProps {
     language: Language;
 }
 
 type TabType = 'check' | 'chat' | 'diet';
 
+// General digestive health symptoms (not pancreatitis-specific)
 const SYMPTOMS = {
     en: [
-        'Upper abdominal pain',
-        'Pain radiating to back',
+        'Abdominal pain',
+        'Bloating or gas',
         'Nausea',
         'Vomiting',
-        'Weight loss',
-        'Oily/fatty stools',
-        'Bloating',
-        'Fever',
-        'Rapid pulse',
-        'Tenderness in abdomen'
+        'Heartburn / Acid reflux',
+        'Indigestion',
+        'Constipation',
+        'Diarrhea',
+        'Loss of appetite',
+        'Unexplained weight loss',
+        'Blood in stool',
+        'Difficulty swallowing',
+        'Stomach cramps',
+        'Fatigue after eating'
     ],
     te: [
-        'పై పొట్ట నొప్పి',
-        'వీపుకు వ్యాపించే నొప్పి',
+        'పొట్ట నొప్పి',
+        'ఉబ్బరం లేదా గ్యాస్',
         'వికారం',
         'వాంతులు',
-        'బరువు తగ్గడం',
-        'జిడ్డు/కొవ్వు మలం',
-        'ఉబ్బరం',
-        'జ్వరం',
-        'వేగవంతమైన పల్స్',
-        'పొట్టలో నొప్పి'
+        'గుండెల్లో మంట / యాసిడ్ రిఫ్లక్స్',
+        'అజీర్ణం',
+        'మలబద్ధకం',
+        'విరేచనాలు',
+        'ఆకలి లేకపోవడం',
+        'అనూహ్య బరువు తగ్గడం',
+        'మలంలో రక్తం',
+        'మింగడంలో ఇబ్బంది',
+        'కడుపు నొప్పులు',
+        'తిన్న తర్వాత అలసట'
     ]
 };
 
-export default function PancreatitisModule({ language }: PancreatitisModuleProps) {
+export default function DigestiveHealthModule({ language }: DigestiveHealthModuleProps) {
     const [activeTab, setActiveTab] = useState<TabType>('check');
     const [messages, setMessages] = useState<Message[]>([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -71,7 +80,7 @@ export default function PancreatitisModule({ language }: PancreatitisModuleProps
 
         setIsLoading(true);
         try {
-            const result = await checkPancreatitisSymptoms(selectedSymptoms, language);
+            const result = await checkDigestiveSymptoms(selectedSymptoms, language);
             setCheckResult(result);
         } catch (error) {
             console.error('Error checking symptoms:', error);
@@ -93,7 +102,7 @@ export default function PancreatitisModule({ language }: PancreatitisModuleProps
 
         try {
             const chatHistory = messages.map(m => ({ role: m.role, content: m.content }));
-            const response = await chatAboutPancreatitis(content, chatHistory, language);
+            const response = await chatAboutDigestiveHealth(content, chatHistory, language);
 
             const assistantMessage: Message = {
                 id: generateId(),
@@ -122,7 +131,7 @@ export default function PancreatitisModule({ language }: PancreatitisModuleProps
 
         setIsLoading(true);
         try {
-            const result = await getPancreatitisDiet(language);
+            const result = await getDigestiveHealthDiet(language);
             setDietInfo(result);
         } catch (error) {
             console.error('Error loading diet info:', error);

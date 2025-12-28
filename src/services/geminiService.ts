@@ -31,25 +31,26 @@ const getLangInstruction = (lang: Language): string => {
         : 'Respond in English.';
 };
 
-// Pancreatitis Module - Disease Check
-export async function checkPancreatitisSymptoms(
+// Digestive Health Module - Symptom Check
+export async function checkDigestiveSymptoms(
     symptoms: string[],
     lang: Language
 ): Promise<string> {
     const prompt = `
 ${getLangInstruction(lang)}
 
-You are a medical AI assistant specializing in chronic pancreatitis. A user has reported the following symptoms:
+You are a medical AI assistant specializing in digestive health. A user has reported the following symptoms:
 
 Symptoms: ${symptoms.join(', ')}
 
-Analyze these symptoms in relation to chronic pancreatitis. Provide:
-1. Likelihood of pancreatitis (Low/Medium/High)
-2. Explanation of how these symptoms relate to pancreatitis
-3. Recommended next steps (must include seeing a doctor)
-4. Warning signs to watch for
+Analyze these symptoms in relation to common digestive conditions (such as gastritis, IBS, GERD, pancreatitis, liver issues, gallbladder problems, etc.). Provide:
+1. Possible digestive conditions these symptoms may indicate
+2. Severity assessment (Mild/Moderate/Severe)
+3. Explanation of how these symptoms relate to digestive health
+4. Recommended next steps (must include seeing a doctor for proper diagnosis)
+5. Warning signs that require immediate medical attention
 
-Be empathetic but clear. Always recommend professional medical consultation.
+Be empathetic but clear. Always recommend professional medical consultation. Do NOT diagnose - only provide educational information.
 Format the response in a clear, easy-to-read manner.
 `;
 
@@ -57,8 +58,11 @@ Format the response in a clear, easy-to-read manner.
     return result.response.text();
 }
 
-// Pancreatitis Module - AI Chat
-export async function chatAboutPancreatitis(
+// Legacy alias for backward compatibility
+export const checkPancreatitisSymptoms = checkDigestiveSymptoms;
+
+// Digestive Health Module - AI Chat
+export async function chatAboutDigestiveHealth(
     message: string,
     chatHistory: { role: string; content: string }[],
     lang: Language
@@ -71,13 +75,13 @@ export async function chatAboutPancreatitis(
     const prompt = `
 ${getLangInstruction(lang)}
 
-You are a helpful medical AI assistant specializing in chronic pancreatitis. You provide educational information about:
-- What is chronic pancreatitis
-- Causes and risk factors
-- Symptoms and complications
-- Treatment options
-- Lifestyle modifications
-- Diet recommendations
+You are a helpful medical AI assistant specializing in digestive health. You provide educational information about:
+- Common digestive conditions (IBS, GERD, gastritis, ulcers, pancreatitis, liver health, gallbladder issues)
+- Causes and risk factors for digestive problems
+- Symptoms and when to be concerned
+- General treatment approaches
+- Lifestyle modifications for better digestive health
+- Diet and nutrition recommendations
 - When to seek medical help
 
 Previous conversation:
@@ -85,7 +89,7 @@ ${historyText}
 
 User's new message: ${message}
 
-Provide a helpful, accurate, and empathetic response. Always remind users to consult healthcare professionals for actual medical decisions.
+Provide a helpful, accurate, and empathetic response. Do NOT diagnose conditions. Always remind users to consult healthcare professionals for actual medical decisions.
 Keep responses concise but informative.
 `;
 
@@ -93,18 +97,33 @@ Keep responses concise but informative.
     return result.response.text();
 }
 
-// Pancreatitis Module - Healthy Food Tips
-export async function getPancreatitisDiet(lang: Language): Promise<string> {
+// Legacy alias for backward compatibility
+export const chatAboutPancreatitis = chatAboutDigestiveHealth;
+
+// Digestive Health Module - Healthy Food Tips
+export async function getDigestiveHealthDiet(lang: Language): Promise<string> {
     const prompt = `
 ${getLangInstruction(lang)}
 
-Provide comprehensive dietary guidelines for someone with chronic pancreatitis:
+Provide comprehensive dietary guidelines for better digestive health:
 
-1. FOODS TO EAT (at least 8 items with explanations)
-2. FOODS TO AVOID (at least 8 items with explanations)
+1. FOODS THAT SUPPORT DIGESTION (at least 8 items with explanations)
+   - Include fiber-rich foods, probiotics, easy-to-digest options
+
+2. FOODS TO LIMIT OR AVOID (at least 8 items with explanations)
+   - Include triggers for common digestive issues
+
 3. FOODS IN MODERATION (at least 5 items)
-4. MEAL PLANNING TIPS (5 tips)
+   - Foods that are okay occasionally but not daily
+
+4. MEAL PLANNING TIPS (5-7 tips)
+   - Practical advice for digestive comfort
+
 5. HYDRATION GUIDELINES
+   - How much water, when to drink, what to avoid
+
+6. EATING HABITS FOR BETTER DIGESTION
+   - Meal timing, portion sizes, eating speed
 
 Format with clear headers and bullet points. Be specific about why each food is recommended or should be avoided.
 `;
@@ -112,6 +131,9 @@ Format with clear headers and bullet points. Be specific about why each food is 
     const result = await getModel().generateContent(prompt);
     return result.response.text();
 }
+
+// Legacy alias for backward compatibility
+export const getPancreatitisDiet = getDigestiveHealthDiet;
 
 // MolecuLearn Module - Drug Analysis
 export async function analyzeDrug(

@@ -7,7 +7,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import SplashScreen from './components/SplashScreen';
 import HomePage from './components/HomePage';
-import PancreatitisModule from './modules/pancreatitis/PancreatitisModule';
+import DigestiveHealthModule from './modules/pancreatitis/PancreatitisModule';
 import MolecuLearnModule from './modules/moleculearn/MolecuLearnModule';
 import HealthProModule from './modules/healthpro/HealthProModule';
 
@@ -42,7 +42,7 @@ function App() {
   const moduleContent = useMemo(() => {
     switch (currentModule) {
       case 'pancreatitis':
-        return <PancreatitisModule language={language} />;
+        return <DigestiveHealthModule language={language} />;
       case 'moleculearn':
         return <MolecuLearnModule language={language} />;
       case 'healthpro':

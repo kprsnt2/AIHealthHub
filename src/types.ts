@@ -74,6 +74,8 @@ export interface HealthProfile {
   id: string;
   age: number;
   gender: string;
+  weight?: number; // in kg
+  height?: number; // in cm
   conditions: string[];
   medications: string[];
   allergies: string[];
