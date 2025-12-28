@@ -5,13 +5,13 @@
 
 // Rate limit configuration per endpoint type
 const RATE_LIMITS: Record<string, { maxRequests: number; windowMs: number }> = {
-    'drug-analysis': { maxRequests: 10, windowMs: 60000 },      // 10 per minute
+    'drug-analysis': { maxRequests: 5, windowMs: 60000 },      // 10 per minute
     'symptom-analysis': { maxRequests: 5, windowMs: 60000 },    // 5 per minute
     'diet': { maxRequests: 5, windowMs: 60000 },                // 5 per minute
     'diet-plan': { maxRequests: 3, windowMs: 60000 },           // 3 per minute
     'second-opinion': { maxRequests: 3, windowMs: 60000 },      // 3 per minute
     'chat': { maxRequests: 20, windowMs: 60000 },               // 20 per minute
-    'default': { maxRequests: 30, windowMs: 60000 },            // 30 per minute default
+    'default': { maxRequests: 20, windowMs: 60000 },            // 30 per minute default
 };
 
 // Track request timestamps per endpoint

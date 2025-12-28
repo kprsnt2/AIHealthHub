@@ -18,8 +18,8 @@ export const translations: Record<string, Record<Language, string>> = {
         te: 'హోమ్'
     },
     pancreatitis: {
-        en: 'Pancreatitis Care',
-        te: 'పాంక్రియాటైటిస్ సంరక్షణ'
+        en: 'Digestive Health',
+        te: 'జీర్ణ ఆరోగ్యం'
     },
     moleculearn: {
         en: 'Drug Safety',
@@ -66,18 +66,18 @@ export const translations: Record<string, Record<Language, string>> = {
         te: 'మా ఆరోగ్య మాడ్యూల్స్ అన్వేషించండి'
     },
 
-    // Pancreatitis Module
+    // Digestive Health Module (formerly Pancreatitis Care)
     pancreatitisTitle: {
-        en: 'Chronic Pancreatitis Care',
-        te: 'దీర్ఘకాలిక పాంక్రియాటైటిస్ సంరక్షణ'
+        en: 'Digestive Health',
+        te: 'జీర్ణ ఆరోగ్యం'
     },
     pancreatitisDesc: {
-        en: 'Learn about chronic pancreatitis, check symptoms, chat with AI, and get healthy diet tips',
-        te: 'దీర్ఘకాలిక పాంక్రియాటైటిస్ గురించి తెలుసుకోండి, లక్షణాలను తనిఖీ చేయండి, AI తో చాట్ చేయండి మరియు ఆరోగ్యకరమైన ఆహార చిట్కాలు పొందండి'
+        en: 'Learn about digestive conditions, check symptoms, chat with AI, and get healthy diet tips',
+        te: 'జీర్ణ సమస్యల గురించి తెలుసుకోండి, లక్షణాలను తనిఖీ చేయండి, AI తో చాట్ చేయండి మరియు ఆరోగ్యకరమైన ఆహార చిట్కాలు పొందండి'
     },
     diseaseCheck: {
-        en: 'Disease Check',
-        te: 'వ్యాధి తనిఖీ'
+        en: 'Symptom Check',
+        te: 'లక్షణ తనిఖీ'
     },
     chatWithAI: {
         en: 'Chat with AI',
@@ -88,8 +88,8 @@ export const translations: Record<string, Record<Language, string>> = {
         te: 'ఆరోగ్యకరమైన ఆహార చిట్కాలు'
     },
     askAboutPancreatitis: {
-        en: 'Ask anything about chronic pancreatitis...',
-        te: 'దీర్ఘకాలిక పాంక్రియాటైటిస్ గురించి ఏదైనా అడగండి...'
+        en: 'Ask anything about digestive health...',
+        te: 'జీర్ణ ఆరోగ్యం గురించి ఏదైనా అడగండి...'
     },
     symptomsCheck: {
         en: 'Check Your Symptoms',

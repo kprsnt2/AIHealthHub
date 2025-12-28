@@ -1,14 +1,28 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import type { DrugInfo, DiagnosisResult, Language } from '../types';
-import { validateApiKey, parseJsonResponse } from '../utils/apiUtils';
+import { parseJsonResponse } from '../utils/apiUtils';
 
-// Validate API key at initialization
-const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-validateApiKey(apiKey);
+// Get API key - don't throw at initialization, check when needed
+const apiKey = import.meta.env.VITE_GEMINI_API_KEY || '';
 
-const genAI = new GoogleGenerativeAI(apiKey);
+// Lazy initialization - only create client when API key exists
+let genAI: GoogleGenerativeAI | null = null;
+let model: ReturnType<GoogleGenerativeAI['getGenerativeModel']> | null = null;
 
-const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+function getModel() {
+    if (!apiKey || apiKey.trim() === '') {
+        throw new Error(
+            'API key is not configured. Please set VITE_GEMINI_API_KEY in your environment variables.'
+        );
+    }
+
+    if (!genAI) {
+        genAI = new GoogleGenerativeAI(apiKey);
+        model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+    }
+
+    return model!;
+}
 
 // Helper to get language instruction
 const getLangInstruction = (lang: Language): string => {
@@ -39,7 +53,7 @@ Be empathetic but clear. Always recommend professional medical consultation.
 Format the response in a clear, easy-to-read manner.
 `;
 
-    const result = await model.generateContent(prompt);
+    const result = await getModel().generateContent(prompt);
     return result.response.text();
 }
 
@@ -75,7 +89,7 @@ Provide a helpful, accurate, and empathetic response. Always remind users to con
 Keep responses concise but informative.
 `;
 
-    const result = await model.generateContent(prompt);
+    const result = await getModel().generateContent(prompt);
     return result.response.text();
 }
 
@@ -95,7 +109,7 @@ Provide comprehensive dietary guidelines for someone with chronic pancreatitis:
 Format with clear headers and bullet points. Be specific about why each food is recommended or should be avoided.
 `;
 
-    const result = await model.generateContent(prompt);
+    const result = await getModel().generateContent(prompt);
     return result.response.text();
 }
 
@@ -144,7 +158,7 @@ Be accurate and evidence-based.
 Return ONLY valid JSON, no markdown formatting.
 `;
 
-    const result = await model.generateContent(prompt);
+    const result = await getModel().generateContent(prompt);
     const text = result.response.text();
 
     // Parse JSON from response using utility
@@ -218,7 +232,7 @@ Always include "Consult a healthcare professional" in recommended actions.
 Return ONLY valid JSON array, no markdown.
 `;
 
-    const result = await model.generateContent(prompt);
+    const result = await getModel().generateContent(prompt);
     const text = result.response.text();
 
     // Parse JSON from response using utility
@@ -275,7 +289,7 @@ Provide a thorough second opinion analysis:
 Always emphasize that this is for informational purposes and real medical decisions should be made with healthcare professionals.
 `;
 
-    const result = await model.generateContent(prompt);
+    const result = await getModel().generateContent(prompt);
     return result.response.text();
 }
 
@@ -328,7 +342,7 @@ Provide:
 Format clearly with headers and bullet points.
 `;
 
-    const result = await model.generateContent(prompt);
+    const result = await getModel().generateContent(prompt);
     return result.response.text();
 }
 
@@ -349,6 +363,6 @@ Provide helpful, accurate health information. Always recommend consulting health
 Keep response concise and easy to understand.
 `;
 
-    const result = await model.generateContent(prompt);
+    const result = await getModel().generateContent(prompt);
     return result.response.text();
 }
