@@ -54,7 +54,7 @@ export default function Footer({ language }: FooterProps) {
                 {/* Copyright */}
                 <div className="footer-copyright">
                     <p>© {currentYear} AI Health Hub. {language === 'te' ? 'అన్ని హక్కులు రిజర్వ్ చేయబడ్డాయి.' : 'All rights reserved.'}</p>
-                    <p className="version">v1.0.0</p>
+                    <p className="version">v1.1.0 • Powered by gemini-flash-latest</p>
                 </div>
             </div>
         </footer>
